@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}Profile{% endblock title %}
+
+{% block header %}
+<div class="jumbotron1">
+
+  <a class="logo" href="{% url 'home' %}"><img src="{% static 'homepagepic.png' %}" alt="EasyConnect"></a>
+  <p class="lead1">A Message App for Business.</p>
+  {% if not request.user.is_authenticated %}
+  <p class="lead2">
+    <a class="btn btn-primary btn-md" href="{% url 'login' %}" role="button">Client Log in</a>
+    <a class="btn btn-primary btn-md" href="{% url 'login' %}" role="button">Admin Login</a>
+
+  </p>
+  <p class="lead2">
+    <a class="btn btn-primary btn-block" href="{% url 'choosetype' %}" role="button">Sign Up</a>
+  </p>
+  {% else %}
+  <p class="lead2"> <a href="{% url 'logout' %}">Logout</a> (<u>{{ user.username }})</u>
+  </p>
+  {% endif %}
+</div>
+{% endblock header %}
+
+<!-- main content block  -->
+{% block main %}
+<br>
+<h1 style="padding-block-start: 0%; margin-left: 35%;">Anouncements:</h1>
+<hr>
+
+<div class="jumbotron">
+
+  {% for announcement in announcements %}
+  <div class="alert alert-{{ announcement.level }}">{{ announcement.body|safe }} </div>
+  {% endfor %}
+
+</div> <!-- end subcontent -->
+{% endblock main %}
+
+<!-- sidbar list views -->
+{% block list %}
+<li><a href="{% url 'home' %}"><i class="fas fa-home"></i>Home</a></li>
+<li><a href="{% url 'profile' %}"><i class="fas fa-user"></i>Profile</a></li>
+<li><a href="{% url 'about' %}"><i class="fas fa-address-card"></i>About</a></li>
+<li><a href="{% url 'index' %}"><i class="fas fa-project-diagram"></i>Chat</a></li>
+<li><a href="{% url 'contact' %}"><i class="fas fa-address-book"></i>Contact</a></li>
+{% endblock list %}
+
+

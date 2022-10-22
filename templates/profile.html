@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+
+{% block title %}Profile{% endblock title %}
+
+{% block header %}
+<div class="jumbotron1">
+
+  <a class="logo" href="{% url 'home' %}"><img src="{% static 'homepagepic.png' %}" alt="EasyConnect"></a>
+  <p class="lead1">A Message App for Business.</p>
+  {% if not request.user.is_authenticated %}
+  <p class="lead2">
+    <a class="btn btn-primary btn-md" href="{% url 'login' %}" role="button">Client Sign in</a>
+    <a class="btn btn-primary btn-md" href="{% url 'login' %}" role="button">Admin Sign in</a>
+
+  </p>
+  <p class="lead2">
+    <a class="btn btn-primary btn-block" href="{% url 'choosetype' %}" role="button">Sign Up</a>
+  </p>
+  {% else %}
+  <p class="lead2"> <a href="{% url 'logout' %}">Logout</a> (<u>{{ user.username }})</u>
+  </p>
+  {% endif %}
+</div>
+{% endblock header %}
+
+<!-- main content block  -->
+{% block main %}
+{% if not request.user.is_authenticated %}
+<div class="subcontent">Please <a href="{% url 'login' %}">login</a> to view profile page Information</div>
+{% else %}
+<div class="row py-5 px-4 bg-dark">
+  <div class="col-md-5 mx-auto">
+    <!-- Profile widget -->
+    <div class="bg-white shadow rounded overflow-hidden">
+      <div class="px-4 pt-0 pb-4 cover">
+        <div class="media align-items-end profile-head">
+          <div class="profile mr-3"><img src="{{user.photo.url}}" alt="..." width="130"
+              class="rounded mb-2 img-thumbnail"></div>
+          <div class="media-body mb-5 text-white">
+            <h4 class="mt-0 mb-0">{{user.username}}</h4>
+            <p class="small mb-4"> <i class="fas fa-map-marker-alt mr-2"></i>{{user.Organization_name}}</p>
+          </div>
+          {% if user.is_superuser %}
+          <ul class="list-inline mb-0">
+            <li class="list-inline-item">
+              <h5 class="font-weight-bold mb-0 d-block">Status</h5><small class="text-muted"> <i
+                  class="fas fa-user mr-1"></i>Admin</small>
+            </li>
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+      <div class="px-4 py-4">
+        <h5 class="mb-0">About</h5>
+          <div class="row">
+            <p class="font-italic mb-0"><b>Username:</b> {{user.username}}</p>
+          </div>
+          <br>
+          <div class="row">
+            <p class="font-italic mb-0"><b>Email: </b>{{user.email}}</p>
+          </div>
+          <br>
+          <div class="row">
+            <p class="font-italic mb-0"><b>First: </b>{{user.first_name}}</p>
+          </div>
+          <br>
+          <div class="row">
+            <p class="font-italic mb-0"><b>Last: </b>{{user.last_name}}</p>
+          </div>
+          <br>
+          <div class="row">
+            <p class="font-italic mb-0"><b>Phone: </b>{{user.phone_number}}</p>
+          </div>
+          <br>
+          <div class="row">
+            <p class="font-italic mb-0"><b>Name of Organization: </b>{{user.Organization_name}}</p>
+          </div>
+          <br>
+          <div class="row">
+            <p class="font-italic mb-0"><b>Password:</b><a href="{% url 'password_change' %}"> Change Password</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock main %}
+
+<!-- sidbar list views -->
+{% block list %}
+<li><a href="{% url 'home' %}"><i class="fas fa-home"></i>Home</a></li>
+<li><a href="{% url 'about' %}"><i class="fas fa-address-card"></i>About</a></li>
+<li><a href="{% url 'index' %}"><i class="fas fa-project-diagram"></i>Chat</a></li>
+<li><a href="{% url 'announcements' %}"><i class="fas fa-bullhorn"></i>Anouncements</a></li>
+<li><a href="{% url 'contact' %}"><i class="fas fa-address-book"></i>Contact</a></li>
+{% endblock list%}
